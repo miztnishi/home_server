@@ -20,11 +20,11 @@ services:
     depends_on:
       - postgres
     container_name: "api"
-    build: ./main
+    build: ./
     ports:
       - "8000:8000"
     volumes:
-      - ./main/api:/usr/src/server
+      - ./main:/usr/src/server
 
 volumes:
   db_data:

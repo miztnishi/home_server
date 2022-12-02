@@ -1,7 +1,7 @@
 from fastapi import FastAPI
-from db import session ,TestUserTable 
-from model import  TestUser
-
+from db import session ,TestUserTable ,ThermometerTable
+from model import  Thermometer
+import datetime as dt 
 app = FastAPI()
 
 #　ユーザー情報一覧取得
@@ -10,35 +10,40 @@ def get():
     return {"test":"test"}
 
 
-#　ユーザー情報一覧取得
-@app.get("/test_users")
-def get_user_list():
-    users = session.query(TestUserTable).all()
-    return users
+#　thermometer情報一覧取得
+@app.get("/thermometer")
+def get_thermometer_list():
+    thermometers = session.query(ThermometerTable).all()
+    return thermometers
 
 
-# ユーザー情報取得(id指定)
-@app.get("/test_users/{user_id}")
-def get_user(user_id: int):
-    user = session.query(TestUserTable).\
-        filter(TestUserTable.id == user_id).first()
-    return user
+# thermometer情報取得(日付指定)
+@app.get("/thermometer")
+def get_user(start: str = None,end:str=None):
+    start = dt.datetime.date(start)
+    end = dt.datetime.date(end)
+    thermometer = session.query(ThermometerTable).\
+        filter(ThermometerTable.date.between(start,end)).first()
+    return thermometer
 
 
-# ユーザ情報登録
-@app.post("/test_users")
-def post_user(user: TestUser):
-    db_test_user = TestUserTable(name=user.name,email=user.email)
-    session.add(db_test_user)    
+# thermometer情報登録
+@app.post("/thermometer")
+def post_user(thermometer: Thermometer):
+    thermometer = ThermometerTable(date=thermometer.date
+                                    ,temperature=thermometer.temperature
+                                    ,humidity=thermometer.humidity)
+    session.add(thermometer)    
     session.commit()
+    return thermometer
 
+# # ユーザ情報更新
+# @app.put("/test_users/{user_id}")
+# def put_users(user: TestUser, user_id: int):
+#     target_user = session.query(TestUserTable).\
+#         filter(TestUserTable.id == user_id).first()
+#     target_user.name = user.name
+#     target_user.email = user.email
+#     session.commit()
 
-# ユーザ情報更新
-@app.put("/test_users/{user_id}")
-def put_users(user: TestUser, user_id: int):
-    target_user = session.query(TestUserTable).\
-        filter(TestUserTable.id == user_id).first()
-    target_user.name = user.name
-    target_user.email = user.email
-    session.commit()
 

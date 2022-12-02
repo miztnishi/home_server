@@ -1,6 +1,5 @@
 uvicorn
 fastapi
-mysqlclient
 sqlalchemy
 psycopg2
 SQLAlchemy-Utils
