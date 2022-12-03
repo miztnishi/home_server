@@ -19,3 +19,10 @@ class Thermometer(CustomBaseModel):
     date :datetime
     temperature:Optional[int]
     humidity:Optional[int]
+
+#大気圧テーブル
+class AtmosphericPressure(CustomBaseModel):
+    id :Optional[int]
+    date :datetime
+    pressure:Optional[int]
+    altitude:Optional[int]

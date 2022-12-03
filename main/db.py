@@ -55,3 +55,13 @@ class ThermometerTable(Base):
     humidity = Column(Integer, nullable=True)
     createdAt = Column(DateTime, nullable=False,default=dt.datetime.now)
     updatedAt = Column(DateTime, nullable=False,default=dt.datetime.now,onupdate=dt.datetime.now)
+
+#大気圧テーブル
+class AtmosphericPressureTable(Base):
+    __tablename__ = 'atmospheric_pressure'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    date = Column(DateTime, nullable=False)
+    pressure = Column(Integer, nullable=True)
+    altitude = Column(Integer, nullable=True)
+    createdAt = Column(DateTime, nullable=False,default=dt.datetime.now)
+    updatedAt = Column(DateTime, nullable=False,default=dt.datetime.now,onupdate=dt.datetime.now)
