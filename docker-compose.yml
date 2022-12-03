@@ -8,7 +8,6 @@ services:
         POSTGRES_USER: test
         POSTGRES_PASSWORD: test
         POSTGRES_DB: test
-    restart: always
     volumes:
       - db_data:/var/lib/postgresql/data
       - ./main/dbInit.d:/docker-entrypoint-initdb.d #初期データベース作成
