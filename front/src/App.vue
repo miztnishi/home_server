@@ -1,7 +1,7 @@
 <template>
   <nav>
     <router-link to="/homeGraph">気温・湿度グラフ</router-link> |
-    <router-link to="/homeGraph">エアコン閾値設定</router-link>
+    <router-link to="/airConditionerSetting">エアコン閾値設定</router-link>
   </nav>
   <router-view />
 </template>

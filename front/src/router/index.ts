@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import GraphView from "../views/GraphView.vue";
+import AirConditionerSettingView from "../views/AirConditionerSetting.vue"
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
@@ -11,6 +12,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/homeGraph",
     name: "homeGraph",
     component: GraphView,
+  },
+  {
+    path: "/airConditionerSetting",
+    name: "airConditionerSetting",
+    component: AirConditionerSettingView,
   },
   {
     path: "/about",
