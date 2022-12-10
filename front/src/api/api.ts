@@ -1,17 +1,16 @@
 import { AirConditionerSetting, Thermometer } from "@/type";
 import axios from "axios";
-import { Static } from "vue";
 import { UpdateAirConditionerSetting } from '../type';
 
 export class HomeServerApi {
     static HOST_URL = "http://mizserver:8000"
-    static async getThermometer(): Promise<Thermometer[]> {
-        return await axios.get(`${this.HOST_URL}/thermometer`).then((res) => {
+    static async getThermometer(start: string, end: string): Promise<Thermometer[]> {
+        return await axios.get(`${this.HOST_URL}/thermometer?start=${start}&end=${end}`).then((res) => {
             return res.data;
         });
     }
-    static async getActiveAirConditionerSetting(): Promise<AirConditionerSetting> {
-        return await axios.get(`${this.HOST_URL}/airConditionerSetting/active`).then((res) => {
+    static async getActiveAirConditionerSetting(): Promise<AirConditionerSetting[]> {
+        return await axios.get(`${this.HOST_URL}/airConditionerSetting`).then((res) => {
             return res.data;
         });
     }
