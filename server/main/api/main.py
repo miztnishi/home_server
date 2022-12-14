@@ -8,7 +8,7 @@ import os
 import time
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+"/util")
 from fastapi.middleware.cors import CORSMiddleware
-from air_con_util import air_con_util
+from signal_util import signal_util
 
 app = FastAPI()
 
@@ -22,7 +22,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
+GPIO_AIRCON = 21
 
 #　ユーザー情報一覧取得
 @app.get("/")
@@ -99,7 +99,7 @@ def update_air_conditioner_setting_to_non_active():
 #　エアコンに信号を送る
 @app.post("/airConditioner/send-signal" )
 def send_signal_to_air_conditioner():
-    air_con = air_con_util()
+    air_con = signal_util(GPIO_AIRCON)
     #一度電源を落とす
     res = air_con.send_signal("Aircon_OFF") 
     time.sleep(2)
@@ -119,7 +119,14 @@ def send_signal_to_air_conditioner():
 #　エアコンに信号を送る
 @app.post("/airConditioner/send-signal/off" )
 def send_signal_to_air_conditioner_off():
-    air_con = air_con_util()
+    air_con = signal_util(GPIO_AIRCON)
     #電源を落とす
     res = air_con.send_signal("Aircon_OFF") 
 
+#　エアコンに信号を送る
+@app.post("/LED/mode/{mode}" )
+def send_signal_to_air_conditioner_off(mode: str):
+    GPIO_LED = 17
+    signal = signal_util(GPIO_LED)
+    #LEDの電源をmodeによって切り替える
+    signal.send_signal(f"LED_{mode}") 
