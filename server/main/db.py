@@ -1,11 +1,12 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, scoped_session
-from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy import Column, Integer, String, DateTime, Enum, Boolean
 import datetime as dt 
 import os
 from core.config import PROJECT_ROOT
 from dotenv import load_dotenv
+import enum
 
 load_dotenv(verbose=True)
 print(PROJECT_ROOT)
@@ -65,3 +66,16 @@ class AtmosphericPressureTable(Base):
     altitude = Column(Integer, nullable=True)
     createdAt = Column(DateTime, nullable=False,default=dt.datetime.now)
     updatedAt = Column(DateTime, nullable=False,default=dt.datetime.now,onupdate=dt.datetime.now)
+
+class AirConditionerModeType(str,enum.Enum):
+    cooling="cooling"
+    heating="heating"
+    
+# エアコン閾値設定テーブル
+class AirConditionerSettingTable(Base):
+    __tablename__ = 'air_conditioner_setting'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    temperature = Column(Integer, nullable=False)
+    threshold = Column(Integer, nullable=False)
+    mode = Column(Enum(AirConditionerModeType), nullable=False,unique=True)
+    isActive=Column(Boolean, nullable=False ,default=False) 

@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional
 from datetime import  datetime
-
+from db import AirConditionerModeType
 
 class CustomBaseModel(BaseModel):
     createdAt: Optional[datetime]
@@ -26,3 +26,15 @@ class AtmosphericPressure(CustomBaseModel):
     date :datetime
     pressure:Optional[int]
     altitude:Optional[int]
+
+#エアコン閾値設定テーブル
+class AirConditionerSetting(BaseModel):
+    id :Optional[int]
+    temperature :int
+    mode:Optional[AirConditionerModeType]
+    isActive:bool
+
+#エアコン閾値設定更新時
+class UpdateAirConditionerSetting(BaseModel):
+    temperature:int
+    threshold:int
