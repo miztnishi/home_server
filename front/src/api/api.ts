@@ -34,4 +34,9 @@ export class HomeServerApi {
             return res.data;
         });
     }
+    static async sendSignalLed(mode: string) {
+        return await axios.post(`${this.HOST_URL}/LED/mode/${mode}`).then((res) => {
+            return res.data;
+        });
+    }
 }

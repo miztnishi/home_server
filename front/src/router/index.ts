@@ -2,6 +2,7 @@ import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import GraphView from "../views/GraphView.vue";
 import AirConditionerSettingView from "../views/AirConditionerSetting.vue"
+import LedSettingVue from '@/views/LedSetting.vue';
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
@@ -17,6 +18,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/airConditionerSetting",
     name: "airConditionerSetting",
     component: AirConditionerSettingView,
+  },
+  {
+    path: "/ledSetting",
+    name: "ledSetting",
+    component: LedSettingVue,
   },
   {
     path: "/about",

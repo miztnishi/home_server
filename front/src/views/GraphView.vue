@@ -162,7 +162,7 @@ export default defineComponent({
 
     onMounted(async () => {
       const data = await HomeServerApi.getThermometer(
-        now.startOf("d").format("YYYY-MM-DD HH:mm:ss"),
+        now.subtract(1, "d").format("YYYY-MM-DD HH:mm:ss"),
         now.format("YYYY-MM-DD HH:mm:ss")
       );
       state.labels = data.map((i) => dayjs(i.date).format("MM/DD H時"));
