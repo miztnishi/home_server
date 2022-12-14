@@ -60,7 +60,19 @@
               </v-btn>
             </template>
             <v-card class="text-center">
-              <v-card-text> 更新完了 </v-card-text>
+              <v-card-text> 更新完了しました </v-card-text>
+              <v-row align="center">
+                <v-col cols="6">
+                  <v-btn class="my-2" color="blue" @click="sendSignalAirConditioner">
+                    エアコンをつける
+                  </v-btn>
+                </v-col>
+                <v-col cols="6">
+                  <v-btn class="my-2" color="blue" @click="sendSignalAirConditionerOff">
+                    エアコンを消す
+                  </v-btn>
+                </v-col>
+              </v-row>
             </v-card>
           </v-dialog>
         </div>
@@ -134,6 +146,13 @@ export default defineComponent({
       settings = await HomeServerApi.getActiveAirConditionerSetting();
     };
 
+    const sendSignalAirConditioner = async () => {
+      await HomeServerApi.sendSignalAirConditioner();
+    };
+    const sendSignalAirConditionerOff = async () => {
+      await HomeServerApi.sendSignalAirConditionerOff();
+    };
+
     return {
       mode,
       temperatureList,
@@ -145,6 +164,8 @@ export default defineComponent({
       updateAirConditionerSetting,
       showActive,
       fetchSettings,
+      sendSignalAirConditioner,
+      sendSignalAirConditionerOff,
     };
   },
 });

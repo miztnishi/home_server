@@ -24,4 +24,14 @@ export class HomeServerApi {
             return res.data;
         });
     }
+    static async sendSignalAirConditioner() {
+        return await axios.post(`${this.HOST_URL}/airConditioner/send-signal`).then((res) => {
+            return res.data;
+        });
+    }
+    static async sendSignalAirConditionerOff() {
+        return await axios.post(`${this.HOST_URL}/airConditioner/send-signal/off`).then((res) => {
+            return res.data;
+        });
+    }
 }
