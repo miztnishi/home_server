@@ -5,16 +5,14 @@ import time
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import pigpio
 
-class air_con_util():
+class signal_util():
     
-    
-    # OUT_PIN = 17
-    
-    def __init__(self,freq:float = 38.0, gap:int=100) :
+
+    def __init__(self, gpio:int, freq:float = 38.0, gap:int=100,) :
         self.FREQ = freq
         self.GAP_MS = gap
         self.GAP_S = self.GAP_MS  / 1000.0
-        self.OUT_PIN = 17
+        self.OUT_PIN = gpio
         self.FILE = "codes"
     
     def _carrier(self , gpio, frequency, micros):
@@ -42,11 +40,11 @@ class air_con_util():
             exit(0)
             
         try:
-            f = open(self.FILE, "r")
+            f = open(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+ "/util/"+ self.FILE, "r")
             
         except:
             print("Can't open: {}".format(self.FILE))
-            return {"msg":"設定ファイルがないため読み込めませんでした" }
+            raise ValueError("設定ファイルがないため読み込めませんでした!")
         
         records = json.load(f)
         f.close()

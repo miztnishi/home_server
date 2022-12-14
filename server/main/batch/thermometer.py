@@ -4,10 +4,13 @@ import datetime as dt
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from db import session , ThermometerTable
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))+"/util")
+from db import AirConditionerModeType, AirConditionerSettingTable, session , ThermometerTable
+from signal_util import signal_util
  
 #BCM_GPIO14に繋げる
 DHTPIN = 14
+GPIO_AIRCON = 21
 GPIO.setmode(GPIO.BCM)
 MAX_UNCHANGE_COUNT = 100
 
@@ -110,6 +113,7 @@ def read_dht11_dat():
 def main():
     print ("温湿度 計測開始:%s" %(dt.datetime.now()))
     isContinue = True
+    temperature = 0
     while isContinue:
         result = read_dht11_dat()
         if result:
@@ -126,7 +130,31 @@ def main():
             isContinue = False                    
         time.sleep(1)
     print ("温湿度 計測終了:%s" %(dt.datetime.now()))
-
+    
+    # 閾値を元にエアコンを自動でつけたり消したり
+    setting:AirConditionerSettingTable = session.query(AirConditionerSettingTable).filter(AirConditionerSettingTable.isActive == True ).first()
+    if not setting:
+        return
+    
+    # 暖房　かつ 閾値よりも寒くなったら
+    if  ( setting.mode == AirConditionerModeType.heating and setting.threshold >= temperature ) \
+        or ( setting.mode == AirConditionerModeType.cooling and setting.threshold <= temperature ):
+            
+            air_con = signal_util(GPIO_AIRCON)
+            #一度電源を落とす
+            res = air_con.send_signal("Aircon_OFF") 
+            time.sleep(2)
+            #電源をつける
+            res = air_con.send_signal("Aircon_ON") 
+            time.sleep(2)
+            print(f"Aircon_mode_{setting.mode}")
+            #運転モードを変更
+            air_con.send_signal(f"Aircon_mode_{setting.mode}")
+            time.sleep(2)
+            #温度設定
+            print(f"Aircon_mode_{setting.mode}_{setting.temperature}")
+            air_con.send_signal(f"Aircon_mode_{setting.mode}_{setting.temperature}")
+            
 def destroy():
     GPIO.cleanup()
 
